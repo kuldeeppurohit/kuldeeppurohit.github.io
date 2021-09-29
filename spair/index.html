@@ -54,6 +54,7 @@
         <div class="row">
             <h2 class="col-md-12 text-center">
                 <b>SPAIR</b>: Spatially-Adaptive Image Restoration using Distortion-Guided Networks</br> 
+                <image src="img/ICCV2021_Logo.png" height="60px">
                 <small>
                     ICCV 2021
                 </small>
@@ -150,36 +151,23 @@ We present a general learning-based solution for restoring images suffering from
                 <h3>
                     Degradations Considered
                 </h3>
-                <p class="text-justify">
-                    Commonality: Spatially sparse distortions.
-                </p>
                 <p style="text-align:center;">
                     <image src="img/1.png" height="50px" class="img-responsive">
                 </p>
                 <p class="text-justify">
                     Motivation for patially-Adaptive Model
-                    
-                    --All layers in existing restoration models are generic CNN layers, which apply the same set of filters to every degraded image, which is suboptimal.
+                     <ul>
+  <li>All layers in existing restoration models are generic CNN layers, which apply the same set of filters to every degraded image, which is suboptimal.</li>
+  <li>They apply the same filter to every pixel location (do not distinguish between difficult and easy pixels). CNNs, by definition, are composed of spatially-invariant filters.</li>
+  <li>Such layers are limited in their ability to invert degradations that are highly image dependent and spatially-varying.</li>
+  <li>Most network architectures are specifically tailored for individual degradation types as they are based on image formation models. </li>                       
+  <li>Distortion-localization information embedded in the labeled datasets remains unused or sub-optimally used in all existing solutions. </li>                       
 
-                    --They apply the same filter to every pixel location (do not distinguish between difficult and easy pixels). CNNs, by definition, are composed of spatially-invariant filters.
-
-                    --Such layers are limited in their ability to invert degradations that are highly image dependent and spatially-varying. 
-
-                    --Most network architectures are specifically tailored for individual degradation types as they are based on image formation models.
-
-                    --Distortion-localization information embedded in the labeled datasets remains unused or sub-optimally used in all existing solutions.
+                </ul> 
                     <br><br>
                     Our <em>integrated positional encoding</em> considers Gaussian <em>regions</em> of space, rather than infinitesimal points. This provides a natural way to input a "region" of space as query to a coordinate-based neural network, allowing the network to reason about sampling and aliasing. The expected value of each positional encoding component has a simple closed form:
                 </p>
-                <p style="text-align:center;">
-                    <image src="img/ipe_eqn_under_pad.png" height="30px" class="img-responsive">
-                </p>
-                <video id="v0" width="100%" autoplay loop muted>
-                  <source src="img/ipe_anim_horiz.mp4" type="video/mp4" />
-                </video>
-                <p class="text-justify">
-                    We can see that when considering a wider region, the higher frequency features automatically shrink toward zero, providing the network with lower-frequency inputs. As the region narrows, these features converge to the original positional encoding.
-                </p>
+
             </div>
         </div>
             
@@ -188,50 +176,71 @@ We present a general learning-based solution for restoring images suffering from
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <h3>
-                    Mip-NeRF
+                    SPAIR Architecture
                 </h3>
                 <p class="text-justify">
-                    We use integrated positional encoding to train NeRF to generate anti-aliased renderings. Rather than casting an infinitesimal ray through each pixel, we instead cast a full 3D <em>cone</em>. For each queried point along a ray, we consider its associated 3D conical frustum. Two different cameras viewing the same point in space may result in vastly different conical frustums, as illustrated here in 2D:
+                    SPAIR is composed of a localization network (Net_L) and restoration network (Net_R) </p>
+                <p class="text-justify">
+                    Net_R is composed of three types of distortion guided modules:
+                <ul>      
+                    <li>Mask-Guided Sparse Convolution </li>                       
+                    <li>Spatial Feature Modulation </li>                       
+                    <li>Region-Guided Sparse Non-Local (SNL) Module </li>                       
+                </ul>
                 </p>
                 <p style="text-align:center;">
-                    <image src="img/scales_toy.png" class="img-responsive" alt="scales">
-                </p>
-                <p class="text-justify">
-                    In order to pass this information through the NeRF network, we fit a multivariate Gaussian to the conical frustum and use the integrated positional encoding described above to create the input feature vector to the network. 
+                    <image src="img/SPAIR.png" class="img-responsive" alt="scales">
                 </p>
             </div>
         </div>
             
-
-
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <h3>
-                    Results
+                    Qualitative Comparisons
                 </h3>
                 <p class="text-justify">
-                    We train NeRF and mip-NeRF on a dataset with images at four different resolutions. Normal NeRF (left) is not capable of learning to represent the same scene at multiple levels of detail, with blurring in close-up shots and aliasing in low resolution views, while mip-NeRF (right) both preserves sharp details in close-ups and correctly renders the zoomed-out images.
+                    RainStreak removal </p>
+                <p style="text-align:center;">
+                    <image src="img/rainstreak.PNG" class="img-responsive" alt="scales">
                 </p>                
-                <br>
-                <video id="v0" width="100%" autoplay loop muted controls>
-                  <source src="img/ship_sbs_path1.mp4" type="video/mp4" />
-                </video>
-                <video id="v0" width="100%" autoplay loop muted controls>
-                  <source src="img/chair_sbs_path1.mp4" type="video/mp4" />
-                </video>
-                <video id="v0" width="100%" autoplay loop muted controls>
-                  <source src="img/lego_sbs_path1.mp4" type="video/mp4" />
-                </video>
-                <video id="v0" width="100%" autoplay loop muted controls>
-                  <source src="img/mic_sbs_path1.mp4" type="video/mp4" />
-                </video>
-                <br><br>
                 <p class="text-justify">
-                    We can also manipulate the integrated positional encoding by using a larger or smaller radius than the true pixel footprint, exposing the continuous level of detail learned within a single network:
-                </p>     
-                <video id="v0" width="100%" autoplay loop muted controls>
-                  <source src="img/lego_radii_manip_slider_200p.mp4" type="video/mp4" />
-                </video>
+                    Motion Blur removal
+                </p>
+                <p style="text-align:center;">
+                    <image src="img/blur.PNG" class="img-responsive" alt="scales">
+                </p>
+                <p class="text-justify">
+                    Raindrop removal
+                </p>
+                <p style="text-align:center;">
+                    <image src="img/raindrop.PNG" class="img-responsive" alt="scales">
+                </p>    
+                <p class="text-justify">
+                    Shadow removal
+                </p>
+                <p style="text-align:center;">
+                    <image src="img/shadow.PNG" class="img-responsive" alt="scales">
+                </p>                    
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    We perform evaluation of the dual tasks of Reconstruction and Restoration
+                </h3>
+                <p class="text-justify">
+                    Reconstruction and Restoration PSNR comparison for RainStreak removal </p>
+                <p style="text-align:center;">
+                    <image src="img/reconstruction_error_rain_graph.PNG" class="img-responsive" alt="scales">
+                </p>                
+                <p class="text-justify">
+                    Reconstruction and Restoration PSNR comparison for Raindrop removal
+                </p>
+                <p style="text-align:center;">
+                    <image src="img/psnr_plots_raindrops.png" class="img-responsive" alt="scales">
+                </p>
             </div>
         </div>
 
