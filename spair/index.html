@@ -96,7 +96,7 @@
                     <ul class="nav nav-pills nav-justified">
                         <li>
                             <a href="https://arxiv.org/abs/2108.08617">
-                            <image src="img/mip_paper_image.jpg" height="60px">
+                            <image src="img/paper_img.PNG" height="60px">
                                 <h4><strong>Paper</strong></h4>
                             </a>
                         </li>
@@ -159,15 +159,15 @@ We present a general learning-based solution for restoring images suffering from
                 <p class="text-justify">
                     Motivation for patially-Adaptive Model
                     
-                    -All layers in existing restoration models are generic CNN layers, which apply the same set of filters to every degraded image, which is suboptimal.
+                    --All layers in existing restoration models are generic CNN layers, which apply the same set of filters to every degraded image, which is suboptimal.
 
-                    -They apply the same filter to every pixel location (do not distinguish between difficult and easy pixels). CNNs, by definition, are composed of spatially-invariant filters.
+                    --They apply the same filter to every pixel location (do not distinguish between difficult and easy pixels). CNNs, by definition, are composed of spatially-invariant filters.
 
-                    -Such layers are limited in their ability to invert degradations that are highly image dependent and spatially-varying. 
+                    --Such layers are limited in their ability to invert degradations that are highly image dependent and spatially-varying. 
 
-                    -Most network architectures are specifically tailored for individual degradation types as they are based on image formation models.
+                    --Most network architectures are specifically tailored for individual degradation types as they are based on image formation models.
 
-                    -Distortion-localization information embedded in the labeled datasets remains unused or sub-optimally used in all existing solutions.
+                    --Distortion-localization information embedded in the labeled datasets remains unused or sub-optimally used in all existing solutions.
                     <br><br>
                     Our <em>integrated positional encoding</em> considers Gaussian <em>regions</em> of space, rather than infinitesimal points. This provides a natural way to input a "region" of space as query to a coordinate-based neural network, allowing the network to reason about sampling and aliasing. The expected value of each positional encoding component has a simple closed form:
                 </p>
